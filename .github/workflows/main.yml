@@ -20,6 +20,11 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      # Install the required beta components for gcloud
+      - name: Install beta components for gcloud
+        run: |
+          gcloud components install beta --quiet
+
       - name: Deploy to Cloud Run (with build)
         run: |
           gcloud beta run deploy my-app \
