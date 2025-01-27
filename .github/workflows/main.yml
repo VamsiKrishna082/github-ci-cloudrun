@@ -1,0 +1,38 @@
+name: Build and Deploy to Cloud Run
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # - name: Set up Google Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v0
+
+      # - name: Authenticate with Google Cloud
+      #   run: echo "${{ secrets.GCP_SA_KEY }}" | gcloud auth activate-service-account --key-file=-
+
+      # Authenticate with GCP using the service account key from GitHub Secrets
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          credentials: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Deploy to Cloud Run (with build)
+        run: |
+          gcloud beta run deploy my-app \
+            --source . \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --memory 2Gi \
+            --cpu 1 \
+            --concurrency 100 \
+            --min-instances 0 \
+            --max-instances 50
