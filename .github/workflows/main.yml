@@ -18,11 +18,20 @@ jobs:
       #   run: echo "${{ secrets.GCP_SA_KEY }}" | gcloud auth activate-service-account --key-file=-
 
       # Authenticate with GCP using the service account key from GitHub Secrets
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+      # - name: Set up Google Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v2
+      #   with:
+      #     project_id: ${{ secrets.GCP_PROJECT_ID }}
+      #     credentials: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Google Cloud authentication
+        uses: google-github-actions/auth@v0
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          credentials: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }} # Your service account key in GitHub secrets
+
+      # Step 3: Set up Google Cloud SDK
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
 
       - name: Deploy to Cloud Run (with build)
         run: |
