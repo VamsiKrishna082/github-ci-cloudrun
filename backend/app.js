@@ -17,7 +17,7 @@ app.use(cors(corsOptions));
 
 // API endpoint
 app.get('/api/hello', (req, res) => {
-  res.json({ message: 'New Hello, World! Connected to Backend successfully' });
+  res.json({ message: 'New Hello, World! Connected to Backend successfully - action 1' });
 });
 
 // Start the server
