@@ -23,7 +23,6 @@ jobs:
       - name: Deploy to Cloud Run (with build)
         run: |
           gcloud beta run deploy my-app \
-            --quiet \
             --source . \
             --platform managed \
             --region us-central1 \
@@ -32,4 +31,5 @@ jobs:
             --cpu 1 \
             --concurrency 100 \
             --min-instances 0 \
-            --max-instances 50
+            --max-instances 50 \
+            --quiet
